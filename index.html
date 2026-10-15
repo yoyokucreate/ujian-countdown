@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#102d29"><meta name="description" content="Hitung mundur menuju Ujian Hasil Proposal, 2 Desember 2026, dalam waktu WIB.">
+<title>Countdown Ujian Hasil Proposal</title>
+<link rel="apple-touch-icon" href="./icon-192.png"><link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#102d29;color:#f6f4e9}*{box-sizing:border-box}body{margin:0;min-height:100svh;display:grid;place-items:center;padding:32px 20px;background:radial-gradient(ellipse at 50% 0,#245248 0,transparent 65%)}main{width:min(900px,100%);text-align:center}.eyebrow{text-transform:uppercase;letter-spacing:.22em;font-size:.75rem;color:#c8d8ac}.line{height:38px;width:1px;background:#b9cb9d;margin:24px auto}h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(2.4rem,6.5vw,4.8rem);line-height:1.08;margin:0 auto 24px;max-width:750px}time{font-size:1.05rem;color:#d5dfd2}.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:42px 0 30px}.unit{padding:28px 8px;border:1px solid #ffffff25;border-radius:18px;background:#ffffff05}.number{display:block;font-size:clamp(2.1rem,7.5vw,5rem);line-height:1.1;font-weight:500;font-variant-numeric:tabular-nums}.label{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.16em;margin-top:14px;color:#c8d8ac}.note{font-size:.85rem;color:#b5c6be;line-height:1.7;max-width:560px;margin:0 auto}.encouragement{margin:36px 0 0;font-family:Georgia,serif;font-style:italic;font-size:1.2rem;color:#e4d6ae}footer{font-size:.75rem;color:#b5c6be;margin-top:48px;line-height:1.7}noscript{display:block;padding:20px;color:#ffdaa8}button{font:inherit;padding:12px 18px;border:1px solid #c8d8ac;border-radius:25px;background:transparent;color:#f6f4e9;cursor:pointer;margin-top:24px}button:focus-visible{outline:3px solid #e4d6ae;outline-offset:4px}[hidden]{display:none!important}@media(max-width:430px){.countdown{gap:7px}.unit{padding:24px 4px;border-radius:12px}.label{font-size:.62rem;letter-spacing:.1em}h1{font-size:2.7rem}body{padding:32px 15px}}
+</style>
+</head>
+<body><main>
+<p class="eyebrow">Satu langkah lebih dekat</p><div class="line" aria-hidden="true"></div>
+<h1>Ujian Hasil<br>Proposal</h1>
+<time datetime="2026-12-02T00:00:00+07:00">Rabu, 2 Desember 2026</time>
+<div class="countdown" role="timer" aria-label="Sisa waktu menuju 2 Desember 2026 pukul 00.00 WIB">
+<div class="unit"><span class="number" id="days">--</span><span class="label">Hari</span></div>
+<div class="unit"><span class="number" id="hours">--</span><span class="label">Jam</span></div>
+<div class="unit"><span class="number" id="minutes">--</span><span class="label">Menit</span></div>
+<div class="unit"><span class="number" id="seconds">--</span><span class="label">Detik</span></div>
+</div>
+<p id="status" class="note" aria-live="polite">Menuju awal tanggal ujian: 00.00 WIB (UTC+7).<br>Jam pelaksanaan ujian belum ditentukan.</p>
+<noscript>Aktifkan JavaScript dan buka halaman ini di Chrome atau Safari agar hitung mundur berjalan.</noscript>
+<p class="encouragement">Sedikit kemajuan setiap hari, sampai hari yang dinanti.</p>
+<button id="install" hidden>Pasang Countdown Ujian</button>
+<footer>Angka diperbarui saat halaman terbuka.<br>Tambahkan ke layar utama HP atau Dock Mac untuk akses cepat.</footer>
+</main>
+<script>
+'use strict';
+const target = Date.parse('2026-12-02T00:00:00+07:00');
+const fields = ['days','hours','minutes','seconds'].map(id => document.getElementById(id));
+let reached = false;
+function tick() {
+ const remaining = Math.max(0, Math.ceil((target - Date.now()) / 1000));
+ const values = [Math.floor(remaining/86400),Math.floor(remaining/3600)%24,Math.floor(remaining/60)%60,remaining%60];
+ fields.forEach((field,i) => { field.textContent = String(values[i]).padStart(2,'0'); });
+ if (remaining === 0 && !reached) {
+  document.getElementById('status').textContent = 'Tanggal ujian telah tiba. Semoga lancar dan sukses!'; reached = true;
+ }
+}
+tick();setInterval(tick,1000);
+document.addEventListener('visibilitychange',tick);window.addEventListener('pageshow',tick);
+if ('serviceWorker' in navigator && ['https:','http:'].includes(location.protocol)) {
+ navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
+let installPrompt;
+const installButton = document.getElementById('install');
+window.addEventListener('beforeinstallprompt',event => {event.preventDefault();installPrompt=event;installButton.hidden=false;});
+installButton.addEventListener('click',async()=>{if(!installPrompt)return;await installPrompt.prompt();installPrompt=null;installButton.hidden=true;});
+window.addEventListener('appinstalled',()=>{installPrompt=null;installButton.hidden=true;});
+</script></body></html>
